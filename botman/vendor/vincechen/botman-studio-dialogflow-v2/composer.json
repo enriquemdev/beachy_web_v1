@@ -1,0 +1,27 @@
+{
+  "name": "vincechen/botman-studio-dialogflow-v2",
+  "description": "Dialogflow v2 integration for Botman Studio.",
+  "license": "MIT",
+  "keywords": [
+    "Bot",
+    "BotMan",
+    "Chatbot",
+    "Dialogflow"
+  ],
+  "homepage": "https://github.com/vincent659/botman-studio-dialogflow-v2",
+  "authors": [
+    {
+      "name": "Vince",
+      "email": "vincent65961@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "Dialogflow2\\": "src/"
+    }
+  },
+  "require": {
+    "php": ">=7.0",
+    "botman/botman": "~2.1|~3.0"
+  }
+}

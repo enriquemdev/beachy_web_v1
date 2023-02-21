@@ -1,0 +1,206 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="chat.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body id="bodyDeBot">
+    <script id="botmanWidget" src='chat.js'></script>
+
+    <script>
+        var bodyBot = document.querySelector("#bodyDeBot");
+        bodyBot.style.backgroundImage = '';
+    </script>
+
+    <!-- Voice Recognition -->
+    <script>
+        var bodyBot = document.querySelector("#bodyDeBot");
+
+        function recognizeVoice()
+        {
+            var speech = true;
+            window.SpeechRecognition = window.webkitSpeechRecognition;
+
+            const recognition = new SpeechRecognition();
+            recognition.interimResults = true;
+
+            recognition.addEventListener('result', e => {
+                const transcript = Array.from(e.results)
+                    .map(result => result[0])
+                    .map(result => result.transcript)
+                    .join('')
+
+                document.getElementById("userText").value = transcript;
+                //console.log(transcript);
+            });
+
+            recognition.addEventListener('audiostart', e => {
+                microfonoBot.style.color = 'red';
+            });
+
+            recognition.addEventListener('audioend', e => {
+                microfonoBot.style.color = 'black';
+                bodyBot.querySelector("#userText").focus();
+            });
+            
+            if (speech == true) {
+                recognition.start();
+            }
+
+
+        }
+
+        //var cuerpoMsj
+        window.addEventListener("load", function() {
+            var contenedorMicrofono = bodyBot.querySelector("#botmanChatRoot div");
+            var elementoViejo = bodyBot.querySelector(".banner");
+            const microfono = document.createElement('i');
+
+            //Estilos microfono
+            microfono.classList.add("fa-solid");
+            microfono.classList.add("fa-microphone");
+            microfono.style.position = 'fixed';
+            microfono.style.bottom = '15px';
+            microfono.style.right = '5px';
+            microfono.style.fontSize = '20px';
+            microfono.style.zIndex= '99';
+            microfono.id = 'microfonoBot';
+
+            microfono.addEventListener("click", function(){
+                microfonoBot.style.color = 'gray';
+                recognizeVoice();
+                
+            });
+            
+            //Reemplazar el antiguo banner con el microfono
+            contenedorMicrofono.replaceChild(microfono, elementoViejo);
+            var microfonoBot = document.querySelector("#microfonoBot");
+
+        });
+    </script>
+
+    <!-- Text to speech  -->
+    <script>
+        var bodyBot = document.querySelector("#bodyDeBot");
+        // //var cuerpoMsj
+        // window.addEventListener("load", function() {
+        //     var contenedorInput = bodyBot.querySelector(".banner");
+        //     const btnNuevo = document.createElement('button');
+        
+        //     btnNuevo.id = "botonsi";
+        //     contenedorInput.appendChild(btnNuevo);
+        // });
+
+        
+        
+
+        // function cargar()
+        // {
+        //     console.log("hhhhh");
+        //     var mensajes = document.querySelectorAll("li.chatbot .msg div p");
+
+        //     for (var msj of mensajes)
+        //     {
+        //         console.log(msj);
+        //     }
+        // }
+
+        //bodyBot.onmousemove = cargar;
+
+        // Select the node that will be observed for mutations
+        const targetNode = document.getElementById('bodyDeBot');
+
+        // Options for the observer (which mutations to observe)
+        const config = { attributes: true, childList: true, subtree: true };
+
+        //settings of voice
+        let synth = speechSynthesis,
+        isSpeaking = true;
+        let utterance;
+        //let nombreVoz = 'Google español de Estados Unidos';
+
+        // Callback function to execute when mutations are observed
+        const callback = (mutationList, observer) => {//The MutationObserver interface provides the ability to watch for changes being made to the DOM tree.
+            for (const mutation of mutationList) 
+            {
+
+                if (mutation.type === 'childList') 
+                {
+                    //cargar();
+                    //console.clear();
+                    try
+                    {
+                        //console.log(mutation.addedNodes[0])
+                        if(mutation.addedNodes[0].classList.contains("chatbot") && mutation.addedNodes[0].querySelector("p").textContent != 'Hola! Soy Yuniqua, la representante de servicio al cliente de la  tienda Beachy Nicaragua! Dime en que puedo ayudarte.') 
+                        {
+                            const texto = mutation.addedNodes[0].querySelector("p").textContent;
+                            console.log(texto);
+                            /*
+                            Microsoft Sabina - Spanish (Mexico)
+                            Google español
+                            Google español de Estados Unidos
+                            */
+                           
+                            function textToSpeech(text){
+                                utterance = new SpeechSynthesisUtterance(text);
+                                for(let voice of synth.getVoices()){
+                                    if(voice.name === 'Google español de Estados Unidos'){
+                                        utterance.voice = voice;
+                                    }
+                                }
+                                if (text == 'Lo siento, lo que me dices está fuera de mi alcance por el momento. Tengo una lista de preguntas frecuentes por si te ayudan a aclarar tus dudas.')
+                                {
+                                    //Ejecutarlo despues de 1 segundo(casi)
+                                    setTimeout(function(){
+                                        synth.speak(utterance);
+                                    }, 1050);
+                                }
+                                else
+                                {
+                                    synth.speak(utterance);//Para otros mensajes
+                                }
+                                
+                            }
+
+
+                            textToSpeech(texto);
+
+                            //AGREGAR BOTON DE PLAY SONIDO TEXTO
+                            var contenedorMsg = mutation.addedNodes[0].querySelector(".msg .time");
+                            //var contenedorMsg = mutation.addedNodes[0].querySelector(".msg div");
+
+                            const btnSound = document.createElement('i');
+                            btnSound.addEventListener("click", function(){
+                                textToSpeech(texto);
+                            });
+                            
+                            btnSound.style.float = 'left';
+                            btnSound.style.marginRight = '10px';
+
+                            btnSound.classList.add("fa-solid");
+                            btnSound.classList.add("fa-volume-high");
+                            btnSound.style.fontSize = "11px";
+                            contenedorMsg.appendChild(btnSound);//<i class="fa-solid fa-volume-high"></i>
+                            
+                        }
+                        //console.log(mutation.addedNodes[0]);
+                    }
+                    catch(ex)
+                    {
+                        console.log('error');
+                    }
+                } 
+            }
+        };
+
+        // Create an observer instance linked to the callback function
+        const observer = new MutationObserver(callback);
+
+        // Start observing the target node for configured mutations
+        observer.observe(targetNode, config);
+    </script>
+    
+</body>
+</html>
+
+

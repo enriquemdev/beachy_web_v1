@@ -1,0 +1,26 @@
+DOCUMENTACION:
+https://botman.io/
+
+Videos:
+https://beyondco.de/course/build-a-chatbot/understand-your-users/simple-hears-commands
+
+Video inicial:
+https://www.youtube.com/watch?v=56CjNdgm-WM&list=PL5FgCMPf5sL9FphHq3k9HuyB18-hs0_QM&index=18
+
+Se crea el archivo composer.json y se llena con las depencias a ocupar:
+
+en el cmd se ejecuta denntro de la carpeta actual "composer install".
+
+se descargan los archivos de librerias que son chat.js y chat.min.css widget.js
+
+Se hacen los archivos botman.php y OnboardingCOnversation.php que 
+son los controladores del chat.
+
+Luego se crea un template html donde se llame a los archivos de libreria chat css y js
+que basicamente sera el marco que se vera cuando se haga clic en el boton del chat.
+
+Luego donde querramos mostrar el chat(ahorita en home.php al final del archivo)
+llamamos al archivo de libreria widget.js y su configuracion donde va 
+la info de los archivos anteriores.
+
+
